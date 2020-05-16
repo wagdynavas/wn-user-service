@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: userservice
+  cloud:
+    config:
+      token: roottoken
+      uri: http://localhost:8888
+server:
+  port: 8082

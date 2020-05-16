@@ -1,0 +1,6 @@
+riotgames:
+  api:
+    version: v3
+    game: lol
+    base-url: https://api.riotgames.com/${riotgames.api.game}/summoner/${riotgames.api.version}/
+    key: RGAPI-87f61e5c-1c52-41b6-bfd0-97b7cb2018f6
