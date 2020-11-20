@@ -66,7 +66,6 @@ public class UserTest {
         User user = new User();
         user.setEmail("wagdynavas@gmail.com");
         user.setPassword("123");
-        user.setGameAccount("TestAccount")
 
         ;
         mockMvc.perform(MockMvcRequestBuilders.post("/v1/users/")

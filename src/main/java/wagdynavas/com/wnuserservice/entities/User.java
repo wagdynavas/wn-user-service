@@ -17,9 +17,6 @@ public class User {
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @Column(name = "GAME_ACCOUNT", nullable = false)
-    private String gameAccount;
-
 
     public Long getId() {
         return id;
@@ -45,14 +42,6 @@ public class User {
         this.password = password;
     }
 
-    public String getGameAccount() {
-        return gameAccount;
-    }
-
-    public void setGameAccount(String gameAccount) {
-        this.gameAccount = gameAccount;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -62,8 +51,7 @@ public class User {
 
         if (id != null ? !id.equals(user.id) : user.id != null) return false;
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        if (password != null ? !password.equals(user.password) : user.password != null) return false;
-        return gameAccount != null ? gameAccount.equals(user.gameAccount) : user.gameAccount == null;
+        return password != null ? password.equals(user.password) : user.password == null;
     }
 
     @Override
@@ -71,7 +59,6 @@ public class User {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (gameAccount != null ? gameAccount.hashCode() : 0);
         return result;
     }
 
@@ -81,7 +68,6 @@ public class User {
                 "id=" + id +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", gameAccount='" + gameAccount + '\'' +
                 '}';
     }
 }

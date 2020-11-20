@@ -1,38 +1,30 @@
 package wagdynavas.com.wnuserservice.services;
 
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import wagdynavas.com.wnuserservice.entities.Summoner;
 import wagdynavas.com.wnuserservice.entities.User;
-import wagdynavas.com.wnuserservice.exceptions.PlayerGameAccountNotFoundException;
 import wagdynavas.com.wnuserservice.repositories.UserRepositoty;
 
 import java.util.Optional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    private UserRepositoty userRepositoty;
+    private final UserRepositoty userRepositoty;
 
     @Qualifier("getWebBuilder")
-    @Autowired
-    private WebClient.Builder webBuilder;
+    private  final WebClient.Builder webBuilder;
 
-    @Value("${riotgames.api.base-url}")
-    private String gameApi;
-
-    @Value("$(riotgames.api.key)")
-    private String apiKey;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public ResponseEntity<User> getUserById(Long userId) {
         Optional<User> optionalUser = userRepositoty.findById(userId);
@@ -56,19 +48,8 @@ public class UserService {
         }
     }
 
-    public void createUser(User user, String PlayerRegion) {
-
-
-        Summoner summoner = webBuilder.build()
-             .get()
-             .uri(gameApi + user.getGameAccount())
-             .header(PlayerRegion, apiKey)
-             .retrieve()
-             .bodyToMono(Summoner.class)
-             .block();
-
-        if (StringUtils.isEmpty(summoner.getName())) {
-            throw new PlayerGameAccountNotFoundException("PLayer name was not found!");
-        }
+    public void createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepositoty.save(user);
     }
 }
